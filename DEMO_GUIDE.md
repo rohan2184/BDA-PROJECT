@@ -64,19 +64,19 @@ On slide 4 say: *"Let me show it running on Colab,"* then press **Alt+Tab**.
 - Scroll with the mouse wheel, or jump with the **Table of contents** (the ☰ icon on the left lists the headings).
 - If a cell takes a little longer, keep talking. Don't wait silently.
 
-## D. What the live cells print (from the local verification run)
+## D. What the live cells print
 
-The values come from the local run and should match Colab. Small differences in the last decimal are fine.
+These values come from the Colab run on 13 Nov; LIVE 3 was checked locally. A Colab run with the same Spark version and seed should reproduce them. Small differences in a rounded column (for example 14.0 vs 15.0) are fine. The cluster *number* (0–3) can differ between runs; the segment *name* is what matters.
 
 **LIVE 1: SparkSQL on segments.** Say: "At-Risk is the biggest revenue pool, $2.76M, from buyers who haven't returned in about 3 months."
 ```
 +---------------+------+----------------+----------+---------+---------+
 |        Segment|buyers|avg_recency_days|avg_orders|avg_spend|  revenue|
 +---------------+------+----------------+----------+---------+---------+
-|        At-Risk| 39845|            88.0|      1.22|     69.3|2760310.0|
-|      Champions| 10835|            35.0|       4.0|    203.3|2202442.0|
-|New / Promising| 18715|            14.0|      1.16|     39.1| 731990.0|
-|           Lost| 41123|            89.0|      1.02|     15.9| 653526.0|
+|        At-Risk| 39800|            88.0|      1.22|     69.4|2761848.0|
+|      Champions| 10819|            35.0|       4.0|    203.3|2199805.0|
+|New / Promising| 18732|            14.0|      1.16|     39.0| 731462.0|
+|           Lost| 41167|            89.0|      1.02|     15.9| 655153.0|
 +---------------+------+----------------+----------+---------+---------+
 ```
 
@@ -85,7 +85,7 @@ The values come from the local run and should match Colab. Small differences in 
 +---------+-------+---------+--------+-------+---------+
 |  user_id|Recency|Frequency|Monetary|Cluster|  Segment|
 +---------+-------+---------+--------+-------+---------+
-|420629649|      7|        9|   601.7|      1|Champions|
+|420629649|      7|        9|   601.7|      3|Champions|
 +---------+-------+---------+--------+-------+---------+
 
 +----------------+------+-------+
@@ -117,9 +117,9 @@ Recency=100 days  Orders=1  Spend=$  10  ->  Lost
 | Purchasing users | 110,518 |
 | Buyers with RFM | 110,518 |
 | Silhouette at k = 4 | ≈ 0.49 |
-| Segments | Champions 10,835 · New/Promising 18,715 · At-Risk 39,845 · Lost 41,123 |
+| Segments | Champions 10,819 · New/Promising 18,732 · At-Risk 39,800 · Lost 41,167 |
 
-Colab runs Spark 4.0 and the local check ran Spark 3.5. The event and buyer counts must match exactly. If the **cluster sizes** differ, the K-Means random start behaved differently on Spark 4.0. Download `outputs/results.json` from Colab into `outputs/` here and rebuild the deck with `python tools/build_deck.py`, so the slides match what you show.
+These are the Colab (Spark 4.0.5) numbers, and the slides use them. The event and buyer counts must match exactly. If the **segment sizes** differ by a few dozen buyers on the day, that's harmless; say "the sizes vary slightly between runs because K-Means starts from random centres". If they differ a lot, download `outputs/results.json` from Colab into `outputs/` here and rebuild the deck with `python tools/build_deck.py`.
 
 ## F. If something goes wrong
 

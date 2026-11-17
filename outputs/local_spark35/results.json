@@ -1,0 +1,120 @@
+{
+  "data_size_gb": 2.27,
+  "n_files": 5,
+  "raw_rows": 20692840,
+  "raw_partitions": 25,
+  "scan_seconds": 6.3,
+  "clean_rows": 19493208,
+  "removed_rows": 1199632,
+  "removed_pct": 5.8,
+  "clean_seconds": 33.3,
+  "users": 1637770,
+  "sessions": 4520284,
+  "products": 53903,
+  "brands": 273,
+  "first_date": "2019-10-01",
+  "last_date": "2020-02-29",
+  "event_counts": {
+    "view": 9626268,
+    "cart": 5612289,
+    "remove_from_cart": 2968669,
+    "purchase": 1285982
+  },
+  "user_counts": {
+    "view": 1596359,
+    "cart": 397390,
+    "remove_from_cart": 183002,
+    "purchase": 110518
+  },
+  "view_to_purchase_user_pct": 6.9,
+  "revenue": 6348268.0,
+  "purchase_events": 1285982,
+  "peak_month": "2019-11",
+  "reference_date": "2020-03-01",
+  "customers": 110518,
+  "k_scores": [
+    {
+      "k": 2,
+      "wssse": 209251.1106,
+      "silhouette": 0.662
+    },
+    {
+      "k": 3,
+      "wssse": 153483.1608,
+      "silhouette": 0.5479
+    },
+    {
+      "k": 4,
+      "wssse": 117250.1689,
+      "silhouette": 0.4895
+    },
+    {
+      "k": 5,
+      "wssse": 104815.701,
+      "silhouette": 0.4515
+    },
+    {
+      "k": 6,
+      "wssse": 84312.675,
+      "silhouette": 0.5036
+    },
+    {
+      "k": 7,
+      "wssse": 76665.5405,
+      "silhouette": 0.4715
+    },
+    {
+      "k": 8,
+      "wssse": 71364.5041,
+      "silhouette": 0.5073
+    }
+  ],
+  "k_final": 4,
+  "final_silhouette": 0.4895,
+  "segments": [
+    {
+      "Segment": "Champions",
+      "Cluster": 1,
+      "Customers": 10835,
+      "AvgRecency": 35.0,
+      "AvgFrequency": 4.0,
+      "AvgMonetary": 203.3,
+      "TotalRevenue": 2202442.0,
+      "CustomerShare%": 9.8,
+      "RevenueShare%": 34.7
+    },
+    {
+      "Segment": "New / Promising",
+      "Cluster": 3,
+      "Customers": 18715,
+      "AvgRecency": 14.5,
+      "AvgFrequency": 1.16,
+      "AvgMonetary": 39.1,
+      "TotalRevenue": 731990.0,
+      "CustomerShare%": 16.9,
+      "RevenueShare%": 11.5
+    },
+    {
+      "Segment": "At-Risk",
+      "Cluster": 0,
+      "Customers": 39845,
+      "AvgRecency": 87.6,
+      "AvgFrequency": 1.22,
+      "AvgMonetary": 69.3,
+      "TotalRevenue": 2760310.0,
+      "CustomerShare%": 36.1,
+      "RevenueShare%": 43.5
+    },
+    {
+      "Segment": "Lost",
+      "Cluster": 2,
+      "Customers": 41123,
+      "AvgRecency": 89.4,
+      "AvgFrequency": 1.02,
+      "AvgMonetary": 15.9,
+      "TotalRevenue": 653526.0,
+      "CustomerShare%": 37.2,
+      "RevenueShare%": 10.3
+    }
+  ]
+}

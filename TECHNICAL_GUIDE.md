@@ -154,7 +154,7 @@ The slide numbers come from `results.json`, so the deck and the notebook always 
 | The k loop seems stuck | It trains 14 times (7 fits plus 7 Silhouette passes) on 2 cores | Wait. It takes several minutes, and each k prints a line when done |
 | `NameError: spark` / `customers` after a disconnect | The Colab runtime was recycled | Run all again. The data download is also lost if the VM was reset |
 | Running Spark on Windows hangs on a path with `*` | No Hadoop `winutils` | The notebook already passes an explicit file list. Prefer Colab anyway |
-| Numbers differ slightly between Colab and local | Spark 4.0 (Colab) vs 3.5 (local); K-Means initialisation can differ | Counts must match exactly. Cluster sizes may shift slightly, so rebuild the deck from the Colab `results.json` |
+| Numbers differ slightly between Colab and local | Spark 4.0 (Colab) vs 3.5 (local); K-Means initialisation can differ | Verified 13 Nov: all counts match exactly, and the k = 4 segment sizes differ by under 50 buyers. k ≥ 5 results differ more. The deck uses the Colab results; the local ones are in `outputs/local_spark35/` |
 | Partition count is 19 on Colab and 25 locally | Depends on cores and file split size | Expected. Not an error |
 
 **Security:** the Kaggle token is a secret. Keep it in Colab Secrets or `~/.kaggle/access_token`, never in the notebook. Expire it after the project.

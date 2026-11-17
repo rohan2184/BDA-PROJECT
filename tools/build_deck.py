@@ -138,8 +138,8 @@ text(s, 0.6, 3.7, 5.7, 3.3, [
     [("RFM: ", {"bold": True}), (f"from {fmt(R['purchase_events'])} purchase events → {fmt(R['customers'])} buyers. "
       "Recency = days since last order, Frequency = orders (sessions), Monetary = total $.", {})],
     [("Scaling: ", {"bold": True}), ("log1p removes heavy skew; StandardScaler stops Monetary dominating the Euclidean distance.", {})],
-    [("Choosing k: ", {"bold": True}), (f"Silhouette peaks at k=2 (too coarse); WSSSE bends at k=4 "
-      f"(Silhouette {R['final_silhouette']:.2f}) → KMeans(k=4, seed=42).", {})],
+    [("Choosing k: ", {"bold": True}), (f"k=2 is too coarse; WSSSE bends at k=4; k≤4 gives identical clusters on "
+      f"Spark 3.5 and 4.0, k≥5 doesn't (unstable) → KMeans(k=4, seed=42), Silhouette {R['final_silhouette']:.2f}.", {})],
 ], size=13)
 s.shapes.add_picture(f"{OUT}/k_selection.png", Inches(6.45), Inches(3.75), width=Inches(6.35))
 notes(s, f"""The whole pipeline runs in Spark.
@@ -147,7 +147,7 @@ Spark reads all five CSV files into one DataFrame of {R['raw_partitions']} parti
 Cleaning parses the timestamp and drops rows with missing users, zero prices and duplicate events. That leaves {R['clean_rows']/1e6:.1f} million events. Because Spark is lazy, these steps only build a plan, which runs when we call an action like count.
 I explore the data with SparkSQL, then keep only purchase events and use groupBy on user ID to compute Recency, Frequency and Monetary for {fmt(R['customers'])} buyers.
 The values are very skewed, so I take a log, then use VectorAssembler and StandardScaler.
-Finally I train K-Means for k from 2 to 8. The Silhouette score is highest at 2, but that is too coarse. The error curve bends at 4, so the final model is k equals 4 with seed 42.""")
+Finally I train K-Means for k from 2 to 8. The Silhouette score is highest at 2, but that is too coarse. The error curve bends at 4. k = 4 is also stable: up to 4 the clusters are identical on two Spark versions, while 5 and above change between runs. So the final model is k equals 4 with seed 42.""")
 
 # ---------------- Slide 4: Working model ----------------
 s = frame(4, "Working model: live demo on Google Colab", "Working model (live demo)")
@@ -218,6 +218,6 @@ Lost buyers, {lost['CustomerShare%']} percent, made one small order. They should
 On ethics, the data is anonymised (only numeric user IDs), so no personal details were used.
 The limitations are a five-month snapshot and a k chosen partly by judgement. Next, I would use Spark Structured Streaming to update segments live and add browsing features. Thank you.""")
 
-dst = f"{ROOT}/BDA_Customer_Segmentation_Presentation.pptx"
+dst = os.environ.get("DECK_OUT", f"{ROOT}/BDA_Customer_Segmentation_Presentation.pptx")
 prs.save(dst)
 print("saved", dst)

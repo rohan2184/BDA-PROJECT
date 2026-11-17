@@ -33,8 +33,7 @@ Reference topic #34 · Big Data Analytics · Adani University · Rohan Upadhyay
 3. **Runtime → Run all.** The first run installs PySpark and downloads about 0.5 GB from Kaggle (the files unzip to 2.27 GB).
    - Free Colab has only 2 CPU cores, so it is slower than the local check. Expect roughly 5–15 minutes in total. That's fine and shows real Big Data work.
    - If Colab runs out of RAM (the session crashes), go to **Runtime → Restart session**, change `"spark.driver.memory", "6g"` to `"4g"` in the setup cell, and run all again.
-4. Check that the numbers match the slides: **20,692,840** raw → **19,493,208** clean events → **110,518** buyers, k = 4 with Silhouette ≈ **0.49**.
-   - If a number differs (Colab may run a newer Spark), download `outputs/results.json` from Colab's file panel into `outputs/` here and ask Claude to rebuild the deck.
+4. Check that the numbers match the slides: **20,692,840** raw → **19,493,208** clean events → **110,518** buyers, k = 4 with Silhouette ≈ **0.49**. ✅ Done on 13 Nov: everything matched, and the deck now uses the Colab results.
 
 ### 2. Prepare the live demo (see `DEMO_GUIDE.md`)
 - The working model is shown **live** instead of as a video.
@@ -49,16 +48,17 @@ Reference topic #34 · Big Data Analytics · Adani University · Rohan Upadhyay
 ### 4. After the presentation
 - Expire the Kaggle token (Kaggle → Settings → API Tokens → ⋮ → Expire), because it was pasted into a terminal command.
 
-## Key results (local Spark 3.5 run)
+## Key results (Colab run, Spark 4.0.5, 13 Nov)
 
 - 2.27 GB / 20.69M events → 19.49M after cleaning (5.8% removed: missing user/session, price ≤ 0, duplicate events)
 - 1.64M users, 4.52M sessions, 53,903 products, 273 brands, $6.35M purchase revenue, peak month Nov 2019
 - Funnel: 1.60M users viewed → 397k added to cart → **110,518 bought (6.9%)**
-- K-Means k = 4 (seed 42), Silhouette 0.49 (k = 2 scores 0.66 but is too coarse; the WSSSE elbow is at k = 4)
+- K-Means k = 4 (seed 42), Silhouette 0.49 (k = 2 scores 0.66 but is too coarse; the WSSSE elbow is at k = 4, and k ≤ 4 is stable across Spark versions)
+- All data counts are identical on local Spark 3.5. The K-Means segment sizes differ by under 50 buyers. The local outputs are kept in `outputs/local_spark35/`.
 
 | Segment | Buyers | Avg Recency | Avg Orders | Avg Spend | Revenue share |
 |---|---|---|---|---|---|
-| Champions | 10,835 (9.8%) | 35 days | 4.0 | $203 | 34.7% |
-| New / Promising | 18,715 (16.9%) | 14 days | 1.2 | $39 | 11.5% |
-| At-Risk | 39,845 (36.1%) | 88 days | 1.2 | $69 | 43.5% |
-| Lost | 41,123 (37.2%) | 89 days | 1.0 | $16 | 10.3% |
+| Champions | 10,819 (9.8%) | 35 days | 4.0 | $203 | 34.7% |
+| New / Promising | 18,732 (16.9%) | 14 days | 1.2 | $39 | 11.5% |
+| At-Risk | 39,800 (36.0%) | 88 days | 1.2 | $69 | 43.5% |
+| Lost | 41,167 (37.2%) | 89 days | 1.0 | $16 | 10.3% |

@@ -3,7 +3,7 @@
 **Course:** Big Data Analytics, Sem VII CSE/ICT, Adani University
 **Reference topic:** #34, Customer Segmentation Using Scalable Clustering Techniques
 **Author:** Rohan Upadhyay
-**Environment:** Google Colab, Apache Spark (PySpark 3.5 locally, 4.0 on Colab), Spark SQL, Spark MLlib
+**Environment:** Google Colab (Spark 4.0.5, 2 cores), Spark SQL, Spark MLlib. Also verified locally on Spark 3.5.3. Results below are from the Colab run.
 **Notebook:** `BDA_Customer_Segmentation.ipynb`
 
 ---
@@ -96,7 +96,7 @@ KMeans(k=4, seed=42) → cluster profiles → naming rule → broadcast join →
 
 ### 4.1 Ingestion
 - All five files are read into **one DataFrame** with an **explicit schema**. `inferSchema` would need an extra full pass over 2.27 GB just to guess the column types.
-- Spark splits the input into partitions: 25 locally and 19 on Colab, depending on core count and file splits. The partitions are processed in parallel.
+- Spark splits the input into partitions: 19 on Colab and 25 locally, depending on core count and file splits. The partitions are processed in parallel.
 
 ### 4.2 Cleaning
 | Rule | Reason |
@@ -138,19 +138,20 @@ K-Means was trained for k = 2..8 (`seed=42`, `maxIter=50`). Each model was score
 - **WSSSE**, the within-cluster sum of squared errors (`model.summary.trainingCost`), for the elbow method.
 - The **Silhouette** score from `ClusteringEvaluator` (squared Euclidean distance).
 
-| k | WSSSE | Silhouette |
-|---|---|---|
-| 2 | 209,251 | **0.662** |
-| 3 | 153,483 | 0.548 |
-| **4** | **117,250** | **0.490** |
-| 5 | 104,816 | 0.452 |
-| 6 | 84,313 | 0.504 |
-| 7 | 76,666 | 0.472 |
-| 8 | 71,365 | 0.507 |
+| k | WSSSE (Colab, Spark 4.0) | Silhouette (Colab) | Silhouette (local, Spark 3.5) |
+|---|---|---|---|
+| 2 | 209,251 | **0.662** | 0.662 |
+| 3 | 153,483 | 0.548 | 0.548 |
+| **4** | **117,250** | **0.490** | **0.490** |
+| 5 | 96,295 | 0.515 | 0.452 |
+| 6 | 86,820 | 0.517 | 0.504 |
+| 7 | 77,242 | 0.503 | 0.472 |
+| 8 | 71,617 | 0.512 | 0.507 |
 
 **Decision: k = 4.**
 - k = 2 has the best Silhouette but only splits buyers into "good" and "bad", which is too coarse to act on.
-- WSSSE falls by 56k from k = 2 to 3 and by 36k from 3 to 4, then by only 12k from 4 to 5. That bend is the elbow.
+- WSSSE falls by 56k from k = 2 to 3 and by 36k from 3 to 4, then by 21k from 4 to 5 and under 10k per step after that. That bend is the elbow.
+- **Stability:** k = 2, 3 and 4 produce the same clusters on Spark 3.5 and Spark 4.0 (the same Silhouette and WSSSE). For k ≥ 5 the results change between the two versions; at k = 5 the Silhouette moved from 0.45 to 0.52. Those solutions depend on the random starting centres, so they aren't reliable. On Colab k = 5–8 score slightly higher (0.50–0.52) than k = 4 (0.49), but the gain is small and unstable.
 - At k = 4 the Silhouette is 0.49, which indicates reasonable structure, and the clusters correspond to four distinct personas.
 
 ### 4.7 Naming the clusters
@@ -183,13 +184,15 @@ The names are attached to all 110,518 buyers with a **broadcast join**: a small 
 
 **6.9%** of users who viewed a product made a purchase.
 
-### 5.3 Segments (k = 4, Silhouette 0.4895)
+### 5.3 Segments (k = 4, Silhouette 0.4895, Colab run)
 | Segment | Buyers | Share | Avg Recency (days) | Avg Orders | Avg Spend | Revenue | Revenue share |
 |---|---|---|---|---|---|---|---|
-| Champions | 10,835 | 9.8% | 35.0 | 4.00 | $203.3 | $2.20M | **34.7%** |
-| New / Promising | 18,715 | 16.9% | 14.5 | 1.16 | $39.1 | $0.73M | 11.5% |
-| At-Risk | 39,845 | 36.1% | 87.6 | 1.22 | $69.3 | $2.76M | **43.5%** |
-| Lost | 41,123 | 37.2% | 89.4 | 1.02 | $15.9 | $0.65M | 10.3% |
+| Champions | 10,819 | 9.8% | 35.0 | 4.00 | $203.3 | $2.20M | **34.7%** |
+| New / Promising | 18,732 | 16.9% | 14.5 | 1.16 | $39.0 | $0.73M | 11.5% |
+| At-Risk | 39,800 | 36.0% | 87.5 | 1.22 | $69.4 | $2.76M | **43.5%** |
+| Lost | 41,167 | 37.2% | 89.5 | 1.02 | $15.9 | $0.66M | 10.3% |
+
+The local Spark 3.5 run gave the same four segments, with sizes within 50 buyers of these (for example 10,835 Champions). All revenue shares are the same to one decimal place.
 
 Charts are in `outputs/`:
 - `eda_event_funnel.png`, `eda_monthly_revenue.png`, `eda_top_brands.png`
