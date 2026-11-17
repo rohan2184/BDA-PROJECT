@@ -4,10 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-This is a university mini project for the Big Data Analytics course (Adani University, Sem VII CSE/ICT). It is not a software product yet. It holds the course reference PDFs and the project plan. Code (a Colab notebook) will be added as the project progresses.
+This is a university mini project for the Big Data Analytics course (Adani University, Sem VII CSE/ICT). It is not a software product yet. It holds the project plan, the Colab notebook, the slide deck and the project documents.
 
-- `BDASyllabusAdaniUniversity.pdf`: course syllabus. Units 1–6 cover Big Data intro, Hadoop/MapReduce, NoSQL, Apache Spark, analytics/MLlib, and applications/ethics. COs 1–5.
-- `Big Data Analytics Project and Assignment (1).pdf`: evaluation rules and 41 reference project topics.
+- `FINAL_PROJECT_EXPLANATION.md`: the single, complete explanation of the project (report, technical guide, slides, demo runbook and viva answers in one file).
 - `PHASE_PLAN.md`: the source of truth for scope, schedule and deliverables. Read it before doing any work.
 
 ## Project decisions (already made with the user)

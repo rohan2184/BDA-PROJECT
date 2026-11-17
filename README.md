@@ -17,6 +17,7 @@ Reference topic #34 · Big Data Analytics · Adani University · Rohan Upadhyay
 | `BDA_Customer_Segmentation_executed.ipynb` | The same notebook with all outputs saved (from a local PySpark 3.5 run). Keep it as a backup to show if Colab is slow during the demo. |
 | `BDA_Customer_Segmentation_Presentation.pptx` | The 5-slide deck, with the speaker script in each slide's notes. Slide 4 is the live-demo slide. |
 | `BDA_Customer_Segmentation_run-by-colab.ipynb` | A copy downloaded from Colab. |
+| `FINAL_PROJECT_EXPLANATION.md` | **Start here.** The whole project in one file: report, technical guide, slide-by-slide content, live-demo runbook and viva answers. |
 | `PROJECT_REPORT.md` | Full project report: problem, literature, method, results, discussion, references. |
 | `TECHNICAL_GUIDE.md` | Handover guide: Spark concepts, cell-by-cell walkthrough, how to rebuild and change things, known issues. |
 | `DEMO_GUIDE.md` | Live-demo runbook: preparation, click-by-click script, expected outputs, fallbacks. |
